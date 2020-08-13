@@ -1,3 +1,5 @@
+package com.ssm.test;
+
 import com.ssm.dao.IUserDao;
 import com.ssm.pojo.User;
 import org.apache.ibatis.io.Resources;
@@ -10,10 +12,9 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * @author lenovo
- * @version 1.0
- * @description: TODO
- * @date 2020/8/13 17:28
+ * @ Author     ：swy.
+ * @ Date       ：Created in 21:22 2020/8/13
+ * @ Description：
  */
 public class TestMybatis {
 
@@ -21,7 +22,7 @@ public class TestMybatis {
         //  1.读取配置文件
         InputStream resourceAsStream = null;
         try {
-             resourceAsStream = Resources.getResourceAsStream("Mybatis.xml");
+            resourceAsStream = Resources.getResourceAsStream("Mybatis.xml");
         } catch (IOException e) {
             e.printStackTrace();
         }

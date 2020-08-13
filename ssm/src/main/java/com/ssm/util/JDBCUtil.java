@@ -1,4 +1,4 @@
-package utils;
+package com.ssm.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,13 +6,11 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 
 /**
- * @author lenovo
- * @version 1.0
- * @description: JDBC工具类
- * @date 2020/8/13 14:36
+ * @ Author     ：swy.
+ * @ Date       ：Created in 21:25 2020/8/13
+ * @ Description：JDBC工具类
  */
-public final class JDBCUtil {
-
+public class JDBCUtil {
     private static Logger logger = LoggerFactory.getLogger(JDBCUtil.class);
 
     private static final String Driver = "com.mysql.jdbc.Driver";
@@ -82,8 +80,5 @@ public final class JDBCUtil {
             logger.error("创建statement失败"+e);
         }
     }
-
-
-
 
 }

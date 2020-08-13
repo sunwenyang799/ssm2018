@@ -1,13 +1,14 @@
-import utils.JDBCUtil;
+package com.ssm.test;
+
+
+import com.ssm.util.JDBCUtil;
 
 /**
- * @author lenovo
- * @version 1.0
- * @description: jdbc复习  https://www.runoob.com/w3cnote/jdbc-use-guide.html菜鸟教程
- * @date 2020/8/13 14:35
+ * @ Author     ：swy.
+ * @ Date       ：Created in 21:26 2020/8/13
+ * @ Description：测试JDBC
  */
 public class TestJDBC {
-
     public static void main(String[] args){
 
 //        try {
