@@ -1,7 +1,7 @@
 package com.ssm.dao;
 
+import com.ssm.mybatis.annotations.Select;
 import com.ssm.pojo.User;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface IUserDao {
 
-//     @Select("select * from t_user")
+     @Select("select * from t_user")
      List<User> findAll();
 }

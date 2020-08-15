@@ -1,21 +1,20 @@
-package com.ssm.test;
-
-
-import com.ssm.util.JDBCUtil;
+import utils.JDBCUtil;
 
 /**
- * @ Author     ：swy.
- * @ Date       ：Created in 21:26 2020/8/13
- * @ Description：测试JDBC
+ * @author lenovo
+ * @version 1.0
+ * @description: jdbc复习  https://www.runoob.com/w3cnote/jdbc-use-guide.html菜鸟教程
+ * @date 2020/8/13 14:35
  */
 public class TestJDBC {
+
     public static void main(String[] args){
 
 //        try {
 //            // 加载驱动mysql驱动  ClassNotFoundException oracle驱动oracle.jdbc.driver.OracleDriver
 //            Class.forName("com.mysql.jdbc.Driver");
-////            //  获取连接  SQLException
-////            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_gxyx", "root", "admin");
+//            //  获取连接  SQLException
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_gxyx", "root", "admin");
 //            //   操作数据库
 //            Statement statement = connection.createStatement();
 //            ResultSet resultSet = statement.executeQuery("select * from t_class");

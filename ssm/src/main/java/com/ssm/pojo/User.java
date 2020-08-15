@@ -2,6 +2,7 @@ package com.ssm.pojo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author lenovo
@@ -13,7 +14,7 @@ public class User implements Serializable {
 
     private String id;
     private  String username;
-    private LocalDate birthday;
+    private Date birthday;
     private String sex;
     private String adress;
 
@@ -33,11 +34,11 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

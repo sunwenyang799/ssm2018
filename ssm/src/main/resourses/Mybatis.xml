@@ -19,12 +19,12 @@
     </environments>
     <!--指定映射配置文件的位置，映射配置文件指的是每个dao独立的配置文件-->
     <!--配置文件映射方法-->
-    <mappers>
-        <mapper resource="Mapper/UserMapper.xml"></mapper>
-    </mappers>
+<!--    <mappers>-->
+<!--        <mapper resource="Mappers/UserMapper.xml"></mapper>-->
+<!--    </mappers>-->
     <!--如果是注解来配置的话，resource应该使用映射的类型-->
     <!--注解配置映射方法-->
-<!--    <mappers>-->
-<!--        <mapper class="com.ssm.dao.IUserDao"></mapper>-->
-<!--    </mappers>-->
+    <mappers>
+        <mapper class="com.ssm.dao.IUserDao"></mapper>
+    </mappers>
 </configuration>
