@@ -24,6 +24,7 @@ public class IUserDaoImpl implements IUserDao {
         //   获取session对象
         SqlSession session = factory.openSession();
         List<User> list = session.selectList("com.ssm.dao.IUserDao.findAll");
+        session.close();
         return list;
     }
 }
