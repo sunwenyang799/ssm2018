@@ -3,8 +3,66 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssm.dao.IUserDao">
+    <!--配置 查询结果的列名和实体类的属性名的对应关系-->
+    <resultMap id="user" type="com.ssm.pojo.User">
+        <id property="userId" column="id"></id>
+        <result property="userAdress" column="adress"></result>
+        <result property="userBirthday" column="birthday"></result>
+        <result property="userName" column="username"></result>
+        <result property="userSex" column="sex"></result>
+    </resultMap>
+    <insert id="saveUser" parameterType="com.ssm.pojo.User" >
+        <!--获取插入对象的id
+        keyProperty实体类对应的属性
+        keyColumn数据库对应字段
+        order AFTER插入后的id BEFORE插入前的id(递增主键在插入前的id默认为0)
+        resultType 返回类型
+        -->
+        <selectKey keyColumn="id" keyProperty="userId" order="AFTER" resultType="java.lang.Integer">
+            select last_insert_id();
+        </selectKey>
+        insert into t_user(username,birthday,sex,adress)
+         values(#{userName},#{userBirthday},#{userSex},#{userAdress})
+    </insert>
 
-    <select id="findAll" resultType="com.ssm.pojo.User">
-        select * from t_user
+    <update id="updateUser" parameterType="com.ssm.pojo.User">
+        update t_user set username = #{userName},birthday = #{userBirthday},sex = #{userSex},adress = #{userAdress}
+        where id = #{userId}
+    </update>
+
+    <!--当参数为Integer且只有一个参数时, parameterType为int、integer、INTEGER、INT都可以-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        <!--当参数为Integer且只有一个参数时，#{这里可以写什么都可以}-->
+        delete from t_user where id = #{id}
+    </delete>
+
+    <select id="findAll" resultMap="user">
+        <!--处理类属性与数据库字段不一致是也可以使用as方式
+        这种方式比resultMap查询效率更高,因为resultMap需要多解析xml-->
+      select * from t_user
+        <!--select id as userId ,username as userName,adress as userAdress,sex as userSex,birthday as userBirthday
+        from t_user-->
+    </select>
+
+    <select id="findById" resultMap="user" parameterType="Integer">
+        select * from t_user where id = #{id}
+    </select>
+
+    <select id="findByUsername" resultType="com.ssm.pojo.User" parameterType="string">
+        <!--Preparing: select * from t_user where username like ?
+           Parameters: %update%(String)
+            采用preparedStatement的参数占位符 推荐使用参数占位符-->
+        select * from t_user where username like #{userName}
+        <!--select * from t_user where username like '%save%'
+         采用statement对象的字符串拼接Sql方式进行模糊查询  ${value}此处必须是value 源码中只会取value值-->
+        <!--select * from t_user where username like '%${value}%'-->
+    </select>
+
+    <select id="findTotal" resultType="java.lang.Integer">
+        select count(id) from t_user
+    </select>
+
+    <select id="findByVo" resultMap="user" parameterType="com.ssm.pojo.QueryVo">
+        select * from t_user where username like #{user.userName}
     </select>
 </mapper>

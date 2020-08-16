@@ -12,14 +12,14 @@ import java.util.List;
  * @ Date       ：Created in 22:01 2020/8/13
  * @ Description：测试dao如果有实现类如何实现
  */
-public class IUserDaoImpl implements IUserDao {
+public class IUserDaoImpl  {
 
     private SqlSessionFactory factory;
 
     public IUserDaoImpl(SqlSessionFactory factory){
         this.factory = factory;
     }
-    @Override
+//    @Override
     public List<User> findAll() {
         //   获取session对象
         SqlSession session = factory.openSession();
