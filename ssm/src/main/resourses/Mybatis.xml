@@ -3,24 +3,63 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--配置properties
+        可以在标签内部配置连接数据库的信息，也可以通过属性引用外部配置文件信息
+        resources属性:
+                常用于指定配置文件的位置，是按照类路径的写法来写，并且必须存放于类路径下
+        url属性：
+                是要求按照Url的写法来写地址
+                URL：Uniform Resource Locator 同意资源定位符。他是可以唯一标识一个资源的位置
+                它的写法：
+                          协议   主机(host) 端口  URI
+                    例如：http://127.0.0.1:8080/ssm/xxx
+                URI: Uniform Resource Identifier 统一资源标识符。它是在应用中可以唯一定位一个资源的
+    -->
+    <!--此处采用了file协议(本地文件传输协议)   file:///是本地文件没有host所以host省略为///-->
+    <!--<properties url="file:///F:/ssm/src/main/resourses/jdbcConfig.properties">-->
+    <!--</properties>-->
+    <properties resource="jdbcConfig.properties">
+        <!--<property name="driver" value="com.mysql.jdbc.Driver"></property>-->
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/db_spring"></property>-->
+        <!--<property name="username" value="root"></property>-->
+        <!--<property name="password" value="admin"></property>-->
+    </properties>
+
+    <!--使用typeAliases配置别名-->
+    <typeAliases>
+        <!--typeAlias用于配置类的别名。type属性指的是实体类的权限定类名。alias属性指定别名 指定别名之后不区分大小写-->
+        <!--<typeAlias type="com.ssm.pojo.User1" alias="user"></typeAlias>-->
+
+        <!--package用于配置包的别名。当指定之后，该包下的实体类都会注册别名，并且类名就是别名，不区分大小写-->
+        <package name="com.ssm.pojo"></package>
+    </typeAliases>
     <!--配置环境-->
     <environments default="mysql">
         <!--配置默认的环境-->
-        <environment id="mysql">
+        <environment id="mysql" >
             <!--配置事务类型-->
             <transactionManager type="jdbc"></transactionManager>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"></property>
-                <property name="url" value="jdbc:mysql://localhost:3306/db_spring"></property>
-                <property name="username" value="root"></property>
-                <property name="password" value="admin"></property>
+                <property name="driver" value="${driver}"></property>
+                <property name="url" value="${url}"></property>
+                <property name="username" value="${username}"></property>
+                <property name="password" value="${password}"></property>
             </dataSource>
         </environment>
+
     </environments>
     <!--指定映射配置文件的位置，映射配置文件指的是每个dao独立的配置文件-->
     <!--配置文件映射方法-->
     <mappers>
-        <mapper resource="Mappers/UserMapper.xml"></mapper>
+        <!--<mapper resource="Mappers/UserMapper.xml"></mapper>-->
+        <!--url配置指定配置文件的位置-->
+        <!--<mapper url="file:///F:/ssm/src/main/resourses/Mappers/UserMapper.xml"></mapper>-->
+        <!--<mapper resource="Mappers/UserMapper1.xml"></mapper>-->
+
+        <!--package标签用于指定dao接口所在的包，当指定了之后就不需要在写mapper 以及mapper中的class或者resource了-->
+        <!--注意!!! dao接口所在的包和xml配置文件所在的包一定要和name一致并且接口和xml配置文件要同名
+        -->
+        <package name="com.ssm.dao"></package>
     </mappers>
     <!--如果是注解来配置的话，resource应该使用映射的类型-->
     <!--注解配置映射方法-->

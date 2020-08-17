@@ -1,10 +1,10 @@
 package com.ssm.test;
 
-import com.ssm.dao.IUserDao;
-import com.ssm.pojo.QueryVo;
+import com.ssm.dao.UserDao;
+import com.ssm.dao.impl.UserDaoImpl;
 import com.ssm.pojo.User;
+import com.ssm.pojo.User1;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.After;
@@ -19,15 +19,14 @@ import java.util.List;
 /**
  * @ Author     ：swy
  * @ Date       ：Created in 21:26 2020/8/15
- * @ Description：测试mybatis的crud
+ * @ Description：测试使用实现类实现mybatis的crud
  */
-public class TestMybatisCRUD {
+public class TestMybatisImplCRUD {
 
-    private IUserDao userDao;
+    private UserDao userDao;
 
     private InputStream inputStream;
 
-    private SqlSession session;
 
     /**
      * 初始化获取代理对象
@@ -41,8 +40,7 @@ public class TestMybatisCRUD {
         }
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
         SqlSessionFactory factory = builder.build(inputStream);
-        session = factory.openSession(true);
-        userDao = session.getMapper(IUserDao.class);
+        userDao = new UserDaoImpl(factory);
     }
 
     /**
@@ -50,8 +48,6 @@ public class TestMybatisCRUD {
      */
     @After
     public void destory(){
-        session.commit();
-        session.close();
         try {
             inputStream.close();
         } catch (IOException e) {
@@ -65,11 +61,10 @@ public class TestMybatisCRUD {
     @Test
     public void testFindAll()  {
 
-        List<User> list = userDao.findAll();
-        for (User user : list) {
+        List<User1> list = userDao.findAll();
+        for (User1 user : list) {
             System.out.println(user.toString());
         }
-
     }
 
     /**
@@ -77,11 +72,11 @@ public class TestMybatisCRUD {
      */
     @Test
     public void testSaveUser(){
-        User user = new User();
-        user.setUserName("test autoCommit");
-        user.setUserSex("男");
-        user.setUserAdress("大连");
-        user.setUserBirthday(new Date());
+        User1 user = new User1();
+        user.setUsername("test impl insert1");
+        user.setAdress("大连");
+        user.setBirthday(new Date());
+        user.setSex("男");
         System.out.println("保存前的user:"+user.toString());
         userDao.saveUser(user);
         //  insert时用select_key查询last_insert_id可以获取到插入的id
@@ -94,12 +89,12 @@ public class TestMybatisCRUD {
      */
     @Test
     public void testUpdateUser(){
-        User user =new User();
-        user.setUserName("test updateUser");
-        user.setUserBirthday(new Date());
-        user.setUserSex("女");
-        user.setUserAdress("updateUser");
-        user.setUserId(4);
+        User1 user =new User1();
+        user.setSex("女");
+        user.setBirthday(new Date());
+        user.setUsername("test impl update");
+        user.setAdress("大连");
+        user.setId(2);
         userDao.updateUser(user);
     }
 
@@ -116,7 +111,7 @@ public class TestMybatisCRUD {
      */
     @Test
     public void testFindById(){
-        User user = userDao.findById(3);
+        User1 user = userDao.findById(2);
         System.out.println(user.toString());
     }
 
@@ -126,10 +121,10 @@ public class TestMybatisCRUD {
     @Test
     public void testFindByUsername(){
         //  参数占位符方式
-        List<User> list = userDao.findByUsername("%update%");
+//        List<User1> list = userDao.findByUsername("%update%");
         //  字符串拼接sql方式
-//        List<User> list = userDao.findByUsername("save");
-        for (User user : list) {
+        List<User1> list = userDao.findByUsername("test");
+        for (User1 user : list) {
             System.out.println(user.toString());
         }
     }
@@ -143,18 +138,4 @@ public class TestMybatisCRUD {
         System.out.println(total);
     }
 
-    /**
-     * 测试根据QueryVo中的username查询
-     */
-    @Test
-    public void testFindByVo(){
-        QueryVo queryVo = new QueryVo();
-        User user = new User();
-        user.setUserName("%User%");
-        queryVo.setUser(user);
-        List<User> list = userDao.findByVo(queryVo);
-        for (User user1 : list) {
-            System.out.println(user1.toString());
-        }
-    }
 }
