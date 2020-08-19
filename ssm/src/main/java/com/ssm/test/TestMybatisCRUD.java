@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class TestMybatisCRUD {
      */
     @After
     public void destory(){
-        session.commit();
+//        session.commit();
         session.close();
         try {
             inputStream.close();
@@ -116,7 +117,7 @@ public class TestMybatisCRUD {
      */
     @Test
     public void testFindById(){
-        User user = userDao.findById(3);
+        User user = userDao.findById(6);
         System.out.println(user.toString());
     }
 
@@ -155,6 +156,37 @@ public class TestMybatisCRUD {
         List<User> list = userDao.findByVo(queryVo);
         for (User user1 : list) {
             System.out.println(user1.toString());
+        }
+    }
+
+    /**
+     * 测试根据user查询
+     */
+    @Test
+    public void testFindUserByCondition(){
+        User user = new User();
+        user.setUserName("test impl update");
+        user.setUserSex("男");
+        List<User> list = userDao.findUserByCondition(user);
+        for (User user1 : list) {
+            System.out.println(user1.toString());
+        }
+    }
+
+    /**
+     * 测试in关键字
+     */
+    @Test
+    public  void testFindUserInIds(){
+        QueryVo vo = new QueryVo();
+        List<Integer> ids = new ArrayList<>();
+        ids.add(2);
+        ids.add(6);
+        ids.add(777);
+        vo.setIds(ids);
+        List<User> list = userDao.findUserInIds(vo);
+        for (User user : list) {
+            System.out.println(user.toString());
         }
     }
 }

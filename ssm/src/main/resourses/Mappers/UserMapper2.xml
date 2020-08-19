@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.IUserDao1">
+
+    <!--配置user的映射-->
+    <resultMap id="UserAccount" type="User1">
+        <id property="id" column="id"></id>
+        <result property="adress" column="adress"></result>
+        <result property="sex" column="sex"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="username" column="username"></result>
+        <collection property="accountList" ofType="Account" select="com.ssm.dao.IAccountDao1.findByUserId"
+         column="id">
+        </collection>
+
+        <collection property="roleList" ofType="Role">
+            <id property="roleId" column="rid"></id>
+            <result property="roleName" column="role_name"></result>
+            <result property="roleDes" column="role_des"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserAccount">
+       select * from t_user
+    </select>
+
+    <select id="findAllRole" resultMap="UserAccount">
+      select u.*,r.id as rid,r.role_name,r.role_des  from t_user u
+       LEFT OUTER JOIN t_userrole ur on u.id = ur.uid
+       LEFT OUTER JOIN t_role r on ur.rid = r.id
+    </select>
+
+</mapper>

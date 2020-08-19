@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssm.dao.IUserDao">
+
+    <!--该映射开启二级缓存-->
+    <cache></cache>
+
     <!--配置 查询结果的列名和实体类的属性名的对应关系-->
     <resultMap id="user" type="com.ssm.pojo.User">
         <id property="userId" column="id"></id>
@@ -11,6 +15,10 @@
         <result property="userName" column="username"></result>
         <result property="userSex" column="sex"></result>
     </resultMap>
+
+    <sql id="selectUser">
+        select * from t_user
+    </sql>
     <insert id="saveUser" parameterType="com.ssm.pojo.User" >
         <!--获取插入对象的id
         keyProperty实体类对应的属性
@@ -39,13 +47,18 @@
     <select id="findAll" resultMap="user">
         <!--处理类属性与数据库字段不一致是也可以使用as方式
         这种方式比resultMap查询效率更高,因为resultMap需要多解析xml-->
-      select * from t_user
+      <!--select * from t_user-->
         <!--select id as userId ,username as userName,adress as userAdress,sex as userSex,birthday as userBirthday
         from t_user-->
+
+        <include refid="selectUser"></include>
     </select>
 
-    <select id="findById" resultMap="user" parameterType="Integer">
-        select * from t_user where id = #{id}
+    <!--useCache该方法开启二级缓存-->
+    <select id="findById" resultMap="user" parameterType="Integer" useCache="true">
+        <!--select * from t_user-->
+        <include refid="selectUser"></include>
+        where id = #{id}
     </select>
 
     <select id="findByUsername" resultType="com.ssm.pojo.User" parameterType="string">
@@ -65,4 +78,28 @@
     <select id="findByVo" resultMap="user" parameterType="com.ssm.pojo.QueryVo">
         select * from t_user where username like #{user.userName}
     </select>
+
+    <select id="findUserByCondition" resultMap="user" parameterType="user">
+        select * from t_user
+        <where>
+            <if test="userName!=null">
+                and  username = #{userName}
+            </if>
+            <if test="userSex!=null">
+                and  sex = #{userSex}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUserInIds" parameterType="com.ssm.pojo.QueryVo" resultMap="user">
+        <include refid="selectUser"></include>
+         <where>
+             <if test="ids!=null and ids.size()>0">
+                <foreach collection="ids" open="id in (" close=")" item="id" separator=",">
+                    #{id}
+                </foreach>
+             </if>
+         </where>
+    </select>
+
 </mapper>

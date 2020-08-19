@@ -25,6 +25,21 @@
         <!--<property name="password" value="admin"></property>-->
     </properties>
 
+    <!--配置全局属性,开启延迟加载  必须卸载properties之后,typeAliases之前-->
+    <!--标签顺序：properties,settings,typeAliases,typeHandlers,objectFactory,
+    objectWrapperFactory,reflectorFactory,plugins,environments,
+    databaseIdProvider,mappers-->
+    <settings>
+        <!--开启延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--它是控制具有懒加载特性的对象的属性的加载情况的。
+    true表示如果对具有懒加载特性的对象的任意调用会导致这个对象的完整加载，false表示每种属性按照需要加载。
+        3.4.1之前(包含)默认为true,之后默认为false-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!--是否开启二级缓存,默认为true-->
+        <setting name="cacheEnabled" value="true"></setting>
+    </settings>
+
     <!--使用typeAliases配置别名-->
     <typeAliases>
         <!--typeAlias用于配置类的别名。type属性指的是实体类的权限定类名。alias属性指定别名 指定别名之后不区分大小写-->
@@ -45,21 +60,31 @@
                 <property name="username" value="${username}"></property>
                 <property name="password" value="${password}"></property>
             </dataSource>
+            <!--数据源类型为JNDI
+             name:必须为data_source value:开头java:comp/env 为固定的, jdbc/ssm为META-INF下的context.xml中name的名称
+             必须在tomcat服务器上才能连接成功
+             -->
+            <!--<dataSource type="JNDI">-->
+                <!--<property name="data_source" value="java:comp/env/jdbc/ssm"></property>-->
+            <!--</dataSource>-->
         </environment>
-
     </environments>
+
     <!--指定映射配置文件的位置，映射配置文件指的是每个dao独立的配置文件-->
     <!--配置文件映射方法-->
     <mappers>
-        <!--<mapper resource="Mappers/UserMapper.xml"></mapper>-->
+        <mapper resource="Mappers/UserMapper.xml"></mapper>
         <!--url配置指定配置文件的位置-->
         <!--<mapper url="file:///F:/ssm/src/main/resourses/Mappers/UserMapper.xml"></mapper>-->
-        <!--<mapper resource="Mappers/UserMapper1.xml"></mapper>-->
-
+        <mapper resource="Mappers/UserMapper1.xml"></mapper>
+        <mapper resource="Mappers/AccountMapper.xml"></mapper>
+        <mapper resource="Mappers/UserMapper2.xml"></mapper>
+        <mapper resource="Mappers/RoleMapper.xml"></mapper>
+        <mapper resource="Mappers/AccountMapper1.xml"></mapper>
         <!--package标签用于指定dao接口所在的包，当指定了之后就不需要在写mapper 以及mapper中的class或者resource了-->
         <!--注意!!! dao接口所在的包和xml配置文件所在的包一定要和name一致并且接口和xml配置文件要同名
         -->
-        <package name="com.ssm.dao"></package>
+        <!--<package name="com.ssm.dao"></package>-->
     </mappers>
     <!--如果是注解来配置的话，resource应该使用映射的类型-->
     <!--注解配置映射方法-->

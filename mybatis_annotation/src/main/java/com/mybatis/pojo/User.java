@@ -1,4 +1,4 @@
-package com.ssm.pojo;
+package com.mybatis.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,29 +6,30 @@ import java.util.List;
 
 /**
  * @author lenovo
- * @description: 使用实现类实现mybatisCURD的pojo  与account的关系为一对多
- * @date 2020/8/17 10:39
+ * @description: t_user实体类
+ * @date 2020/8/19 11:15
  */
-public class User1 implements Serializable {
+public class User implements Serializable {
 
     private Integer id;
+
     private  String username;
+
     private Date birthday;
+
     private String sex;
+
     private String adress;
 
-    //  一对多关系映射：主表实体应包含从表实体的集合引用
+    //  一对多关系映射
     private List<Account> accountList;
 
-    //  多对多关系映射
-    private List<Role> roleList;
-
-    public List<Role> getRoleList() {
-        return roleList;
+    public List<Account> getAccountList() {
+        return accountList;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
     }
 
     public Integer getId() {
@@ -71,22 +72,15 @@ public class User1 implements Serializable {
         this.adress = adress;
     }
 
-    public List<Account> getAccountList() {
-        return accountList;
-    }
-
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
-    }
-
-    @Override
-    public String toString() {
-        return "User1{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", birthday=" + birthday +
-                ", sex='" + sex + '\'' +
-                ", adress='" + adress + '\'' +
-                '}';
-    }
+    //  不重写toString打印地址
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", username='" + username + '\'' +
+//                ", birthday=" + birthday +
+//                ", sex='" + sex + '\'' +
+//                ", adress='" + adress + '\'' +
+//                '}';
+//    }
 }
