@@ -19,12 +19,11 @@ public class AccountServiceImpl implements IAccountService {
     //  工厂模式通过反射方式实例化对象
     private IAccountDao accountDao  = (IAccountDao) BeanFactory.getBean("AccountDao");
 
-    private int i = 0;
 
     public void saveAccount() {
-//        int i  = 1;
+        int i  = 1;
+        System.out.println(i);
         accountDao.saveAccount();
         i++;
-        System.out.println(i);
     }
 }

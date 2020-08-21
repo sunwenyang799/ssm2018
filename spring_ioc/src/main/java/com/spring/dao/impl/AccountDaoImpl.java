@@ -13,11 +13,19 @@ public class AccountDaoImpl implements IAccountDao {
 
     // 验证ApplicationContext和BeanFactory创建对象策略
     public AccountDaoImpl(){
-        System.out.println("AccountServiceImpl对象创建了");
+        System.out.println("AccountDaoImpl对象创建了");
     }
 
     public void saveAccount() {
         System.out.println("保存成功");
+    }
+    
+    public void init(){
+        System.out.println("对象初始化了");
+    }
+
+    public void destroy(){
+        System.out.println("对象被销毁了");
     }
 
 }
