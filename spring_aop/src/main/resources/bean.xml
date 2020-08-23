@@ -4,6 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="beanFactory" class="com.spring.factory.BeanFactory">
+        <property name="accountService" ref="accountServiceProxy"></property>
+        <property name="transactionManager" ref="transactionManager"></property>
+    </bean>
+
+    <bean id="accountServiceBean" factory-bean="beanFactory" factory-method="getAccountService">
+    </bean>
+
+    <bean id = "accountServiceProxy" class="com.spring.service.impl.AccountServiceImpl_proxy">
+        <property name="accountDao" ref="accountDao"></property>
+    </bean>
+
     <bean id = "accountService" class="com.spring.service.impl.AccountServiceImpl">
         <property name="accountDao" ref="accountDao"></property>
         <property name="transactionManager" ref="transactionManager"></property>

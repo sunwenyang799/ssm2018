@@ -6,7 +6,6 @@ import com.spring.utils.ConnectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

@@ -121,6 +121,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     public void transfer(String sourceName, String targetName, Double money) {
+        System.out.println("transfer...");
         try{
             //1.开启事务
             transactionManager.beginTransaction();
