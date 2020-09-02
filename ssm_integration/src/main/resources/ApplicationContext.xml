@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+         <beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+            xsi:schemaLocation="
+              http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context
+             http://www.springframework.org/schema/context/spring-context.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+        <!--配置开启注解扫描-->
+        <context:component-scan base-package="com.ssm">
+            <!--不扫描controller注解,由springmvc处理-->
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+        </context:component-scan>
+
+        <!--整合mybatis-->
+        <!--配置连接池-->
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+            <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+            <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db_spring"></property>
+            <property name="user" value="root"></property>
+            <property name="password" value="admin"></property>
+        </bean>
+
+        <!--配置sqlsessionFactory-->
+        <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+            <property name="dataSource" ref="dataSource"></property>
+            <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
+            <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        </bean>
+        <!--配置AccountDao所在的包-->
+        <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            <property name="basePackage" value="com.ssm.dao"></property>
+            <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        </bean>
+
+        <!--
+        注意：
+       spring容器是springmvc容器的父容器，并且利用注解配置spring和springmvc的时候。
+        需要注意：
+        （1）扫描包spring和springmvc一定要分开扫描自己需要扫的。
+        （2）spring理应扫描dao和service层的包,而springmvc应该扫描controller层包。
+        （3）如果springmvc扫描了service和dao层包将操作数据库的对象装入springmvc容器，那么此时项目将不再支持事务控制。
+        原因：
+        事务控制是spring提供的，而如果由springmvc容器扫描service和dao层进行创建的数据库操作对象，就不再支持事务控制。
+
+        解决：
+        将springmvc中扫描包的位置base-package精确到conroller：
+
+        需要注意的是：
+        （1）context:include-filter 标签的意思是先扫描base-package下的内容，另外再加进来 expression 指定的内容。
+        （2）context:exclude-filter 标签的意思是不扫描 expression 指定的内容。
+        所以如果不精确到controller，springmvc会将service和dao一起扫描，也就导致了事务不起作用。
+        -->
+        <!--配置事务管理-->
+        <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+            <property name="dataSource" ref="dataSource"></property>
+        </bean>
+
+        <!--配置通知-->
+        <tx:advice transaction-manager="transactionManager" id="tx">
+            <tx:attributes>
+                <tx:method name="save*" propagation="REQUIRED"/>
+            </tx:attributes>
+        </tx:advice>
+
+        <!--配置增强-->
+        <aop:config>
+            <aop:advisor advice-ref="tx" pointcut="execution(* com.ssm.service.impl.*.*(..))"></aop:advisor>
+         </aop:config>
+
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+</beans>
