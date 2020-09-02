@@ -73,7 +73,6 @@
 
         <!--配置增强-->
         <aop:config>
-            <aop:pointcut id="" expression=""/>
             <aop:advisor advice-ref="tx" pointcut="execution(* com.ssm.service.impl.*.*(..))"></aop:advisor>
          </aop:config>
 

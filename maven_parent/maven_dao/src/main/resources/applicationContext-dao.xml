@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context
+             http://www.springframework.org/schema/context/spring-context.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<!--dao层配置文件开始-->
+        <!--配置数据源-->
+        <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+            <property name="url" value="jdbc:mysql:///db_spring"></property>
+            <property name="username" value="root"></property>
+            <property name="password" value="admin"></property>
+        </bean>
+
+        <!--配置生产sqlSession对象的工厂-->
+        <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+            <property name="dataSource" ref="dataSource"></property>
+            <!--配置别名-->
+            <property name="typeAliasesPackage" value="com.maven.pojo"></property>
+            <!--如果xml文件和接口不同名且包路径不一致,可以使用mapperLoacations指定映射文件位置-->
+            <!--<property name="mapperLocations" value="classpath:com/maven/dao/IAccountDao.xml"></property>-->
+            <!--如果需要mybatis总配置文件,可以使用configLocation指定配置文件位置-->
+            <!--<property name="configLocation" value="classpath:mybatisConfig.xml"></property>-->
+        </bean>
+
+        <!--扫描接口路径包，生成包下的所有接口的代理对象，并放到spring容器中-->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+            <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+            <property name="basePackage" value="com.maven.dao"></property>
+        </bean>
+
+    <!--dao层配置文件结束-->
+</beans>
